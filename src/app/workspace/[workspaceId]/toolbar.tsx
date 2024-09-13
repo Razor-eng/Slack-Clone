@@ -1,14 +1,20 @@
+import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button"
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "@/components/ui/command";
 import { useGetChannels } from "@/features/channels/api/use-get-channels";
 import { useGetMembers } from "@/features/members/api/use-get-members";
 import { useGetWorkspace } from "@/features/workspaces/api/use-get-workspace";
 import { useWorkspaceId } from "@/hooks/use-workspace-id"
-import { Info, Search } from "lucide-react"
+import { Info, Menu, Search, X } from "lucide-react"
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const Toolbar = () => {
+interface ToolbarProps {
+    showSidebar?: boolean;
+    toggleSidebar?: () => void;
+}
+
+const Toolbar = ({ showSidebar, toggleSidebar }: ToolbarProps) => {
     const workspaceId = useWorkspaceId();
     const router = useRouter();
 
@@ -32,7 +38,19 @@ const Toolbar = () => {
 
     return (
         <nav className="bg-[#481349] flex items-center justify-between h-10 p-1.5">
-            <div className="flex-1" />
+            <div className="flex-1" >
+                <Button
+                    variant={"transparent"}
+                    className="bg-[#5E2C5F]/40 px-3 py-2 md:hidden"
+                    onClick={toggleSidebar}
+                >
+                    {showSidebar ?
+                        <X className="size-6" />
+                        :
+                        <Menu className="size-6" />
+                    }
+                </Button>
+            </div>
             <div className="min-w-[280px] max-[642px] grow-[2] shrink" >
                 <Button onClick={() => setOpen(true)} size={"sm"} className="bg-accent/25 hover:bg-accent/35 w-full justify-start h-7 px-2">
                     <Search className="size-4 text-white mr-2" />
@@ -64,9 +82,11 @@ const Toolbar = () => {
                 </CommandDialog>
             </div>
             <div className="ml-auto flex-1 flex items-center justify-end">
-                <Button variant={"transparent"} size={"iconSm"}>
-                    <Info className="size-5 text-white" />
-                </Button>
+                <Hint label="This is Slack-Web. It is secured and free to use.">
+                    <Button variant={"transparent"} size={"iconSm"}>
+                        <Info className="size-5 text-white" />
+                    </Button>
+                </Hint>
             </div>
         </nav>
     )

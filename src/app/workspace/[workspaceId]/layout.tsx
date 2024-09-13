@@ -9,6 +9,8 @@ import { Loader } from "lucide-react";
 import { Id } from "../../../../convex/_generated/dataModel";
 import Thread from "@/features/messages/components/thread";
 import Profile from "@/features/members/components/profile";
+import WorkspaceSidebarMobile from "./workspace-sidebar-mobile";
+import { useState } from "react";
 
 interface WorkspaceIdLayoutProps {
     children: React.ReactNode;
@@ -16,12 +18,16 @@ interface WorkspaceIdLayoutProps {
 
 const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
     const { parentMessageId, profileMemberId, onClose } = usePanel();
+    const [showSidebar, setShowSidebar] = useState(false);
+    const toggleSidebar = () => {
+        setShowSidebar(!showSidebar);
+    }
 
     const showPanel = !!parentMessageId || !!profileMemberId;
 
     return (
         <div className="h-full">
-            <Toolbar />
+            <Toolbar toggleSidebar={toggleSidebar} showSidebar={showSidebar} />
             <div className="flex h-[calc(100vh-40px)]">
                 <Sidebar />
                 <ResizablePanelGroup
@@ -31,14 +37,16 @@ const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
                     <ResizablePanel
                         defaultSize={20}
                         minSize={11}
-                        className="bg-[#5E2C5F]"
+                        className="bg-[#5E2C5F] sm:block hidden"
                     >
                         <WorkspaceSidebar />
                     </ResizablePanel>
+                    <WorkspaceSidebarMobile showSidebar={showSidebar} />
                     <ResizableHandle withHandle />
                     <ResizablePanel
                         minSize={20}
                         defaultSize={80}
+                        className={`md:block ${(!showPanel && !parentMessageId && !profileMemberId) ? "block" : "hidden"}`}
                     >
                         {children}
                     </ResizablePanel>

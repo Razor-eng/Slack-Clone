@@ -5,7 +5,6 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useCurrentUser } from "../api/use-current-user";
 import { Loader, LogOut, Mail, User } from "lucide-react";
 import { useAuthActions } from "@convex-dev/auth/react";
-import { Button } from "@/components/ui/button";
 
 const UserButton = () => {
     const { signOut } = useAuthActions();
@@ -47,12 +46,9 @@ const UserButton = () => {
             </DropdownMenu>
             <DropdownMenu modal={false}>
                 <DropdownMenuTrigger className="outline-none relative">
-                    <Button
-                        variant={"ghost"}
-                        className="bg-zinc-200/20 hover:bg-zinc-200/30 rounded-md transition size-10 p-0"
-                    >
+                    <div className="bg-zinc-200/20 hover:bg-zinc-200/30 rounded-md transition size-10 p-0 flex items-center justify-center">
                         <LogOut className="text-white size-5" />
-                    </Button>
+                    </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="center" side="right" className="w-60">
                     <DropdownMenuItem onClick={() => signOut()} className="h-10 cursor-pointer">
